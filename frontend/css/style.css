@@ -1,0 +1,75 @@
+/* ── Reset ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #121212;   
+  color: #e0e0e0;        
+  min-height: 100vh;
+}
+
+
+.app { display: flex; height: 100vh; }
+
+.sidebar {
+  width: 220px;
+  background: #1e1e1e;
+  border-right: 1px solid #333;
+  display: flex; flex-direction: column;
+}
+
+.brand {
+  padding: 16px;
+  font-weight: bold;
+  color: #fff;
+  border-bottom: 1px solid #333;
+}
+
+.nav { display: flex; flex-direction: column; padding: 12px; }
+
+.item {
+  padding: 10px; border-radius: 6px;
+  color: #aaa; background: transparent;
+  cursor: pointer; transition: background 0.2s;
+}
+.item:hover { background: #2a2a2a; color: #fff; }
+.item.active { background: #4f8ef7; color: #fff; }
+
+.main { flex: 1; padding: 24px; overflow-y: auto; }
+
+
+.card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th {
+  background: #2a2a2a; color: #bbb;
+  padding: 10px; text-align: left;
+}
+tbody td { padding: 10px; border-top: 1px solid #333; }
+tbody tr:hover { background: #2a2a2a; }
+
+
+.btn {
+  padding: 8px 14px; border-radius: 6px; border: none;
+  cursor: pointer; font-size: 14px;
+}
+.btn-primary { background: #4f8ef7; color: #fff; }
+.btn-danger { background: #e74c3c; color: #fff; }
+.btn-secondary { background: #2a2a2a; color: #fff; }
+
+
+.badge {
+  display: inline-block; padding: 4px 10px;
+  border-radius: 12px; font-size: 12px; font-weight: 600;
+}
+.badge-A { background: #2ecc71; color: #fff; }
+.badge-B { background: #4f8ef7; color: #fff; }
+.badge-C { background: #f39c12; color: #fff; }
+.badge-D, .badge-E { background: #e74c3c; color: #fff; }
