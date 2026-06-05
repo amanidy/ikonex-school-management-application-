@@ -6,6 +6,7 @@ router.post('/', ctrl.recordScore);
 router.put('/:id', ctrl.updateScore);
 router.get('/student/:studentId', ctrl.getStudentScores);
 router.get('/class/:streamId/subject/:subjectId', ctrl.getClassSubjectScores);
+router.get('/', (req, res) => res.json({ message: 'Scores API running' }));
 router.get('/results/:streamId', ctrl.getClassResults);
 
 module.exports = router;
