@@ -64,11 +64,20 @@ exports.assignToStream = async (req, res) => {
     return res.status(400).json({ error: 'stream_id and subject_id are required' });
   }
   try {
-    await db.query(
-      'INSERT IGNORE INTO stream_subjects (stream_id, subject_id) VALUES (?, ?)',
+    const [existing] = await db.query(
+      'SELECT 1 FROM stream_subjects WHERE stream_id = ? AND subject_id = ?',
       [stream_id, subject_id]
     );
-    res.status(201).json({ message: 'Subject assigned to stream' });
+    if (existing.length > 0) {
+      return res.status(409).json({
+        error: 'This subject is already assigned to that stream.'
+      });
+    }
+    await db.query(
+      'INSERT INTO stream_subjects (stream_id, subject_id) VALUES (?, ?)',
+      [stream_id, subject_id]
+    );
+    res.status(201).json({ message: 'Subject assigned to stream successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
