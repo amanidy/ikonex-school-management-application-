@@ -5,6 +5,7 @@ exports.getAll = async (req, res) => {
     const [rows] = await db.query('SELECT * FROM subjects ORDER BY name');
     res.json(rows);
   } catch (err) {
+    console.error('SUBJECTS GETALL ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -15,6 +16,7 @@ exports.getOne = async (req, res) => {
     if (!rows.length) return res.status(404).json({ error: 'Subject not found' });
     res.json(rows[0]);
   } catch (err) {
+    console.error('SUBJECTS GETONE ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -29,6 +31,7 @@ exports.create = async (req, res) => {
     );
     res.status(201).json({ id: result.insertId, name, code });
   } catch (err) {
+    console.error('SUBJECTS CREATE ERROR:', err);
     if (err.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ error: 'Subject code already exists' });
     }
@@ -45,6 +48,7 @@ exports.update = async (req, res) => {
     );
     res.json({ message: 'Subject updated' });
   } catch (err) {
+    console.error('SUBJECTS UPDATE ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -54,6 +58,7 @@ exports.remove = async (req, res) => {
     await db.query('DELETE FROM subjects WHERE id = ?', [req.params.id]);
     res.json({ message: 'Subject deleted' });
   } catch (err) {
+    console.error('SUBJECTS REMOVE ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
