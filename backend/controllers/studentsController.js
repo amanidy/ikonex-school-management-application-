@@ -17,6 +17,7 @@ exports.getAll = async (req, res) => {
     const [rows] = await db.query(query, params);
     res.json(rows);
   } catch (err) {
+    console.error('STUDENTS GETALL ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -33,6 +34,7 @@ exports.getOne = async (req, res) => {
     if (!rows.length) return res.status(404).json({ error: 'Student not found' });
     res.json(rows[0]);
   } catch (err) {
+    console.error('STUDENTS GETONE ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -51,6 +53,7 @@ exports.create = async (req, res) => {
     );
     res.status(201).json({ id: result.insertId, message: 'Student registered' });
   } catch (err) {
+    console.error('STUDENTS CREATE ERROR:', err);
     if (err.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ error: 'Admission number already exists' });
     }
@@ -70,6 +73,7 @@ exports.update = async (req, res) => {
     );
     res.json({ message: 'Student updated' });
   } catch (err) {
+    console.error('STUDENTS UPDATE ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -79,6 +83,7 @@ exports.remove = async (req, res) => {
     await db.query('DELETE FROM students WHERE id = ?', [req.params.id]);
     res.json({ message: 'Student deleted' });
   } catch (err) {
+    console.error('STUDENTS REMOVE ERROR:', err);
     res.status(500).json({ error: err.message });
   }
 };
