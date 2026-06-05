@@ -104,9 +104,9 @@ exports.getStudentScores = async (req, res) => {
 exports.getClassSubjectScores = async (req, res) => {
   try {
     const [rows] = await db.query(
-      `SELECT st.first_name, st.last_name, st.admission_number,
-              sc.cat_score, sc.exam_score, sc.total_score,
-              gc.grade
+      `SELECT st.id, st.first_name, st.last_name, st.admission_number,
+        sc.id AS score_id, sc.cat_score, sc.exam_score, sc.total_score,
+        gc.grade
        FROM students st
        LEFT JOIN scores sc 
          ON st.id = sc.student_id AND sc.subject_id = ?
@@ -128,27 +128,52 @@ exports.getClassSubjectScores = async (req, res) => {
 exports.getClassResults = async (req, res) => {
   try {
     const [rows] = await db.query(
-      `SELECT 
-        st.id,
-        st.first_name,
-        st.last_name,
-        st.admission_number,
-        COALESCE(SUM(sc.total_score), 0) AS total_marks,
-        COUNT(sc.subject_id) AS subjects_taken,
-        CASE 
-          WHEN COUNT(sc.subject_id) > 0 
-          THEN ROUND(SUM(sc.total_score) / COUNT(sc.subject_id), 2)
-          ELSE 0
-        END AS average,
+      `
+      SELECT
+        r.*,
         gc.grade
-       FROM students st
-       LEFT JOIN scores sc ON st.id = sc.student_id
-       LEFT JOIN grade_config gc 
-         ON ROUND(SUM(sc.total_score) / NULLIF(COUNT(sc.subject_id), 0), 2)
-            BETWEEN gc.min_score AND gc.max_score
-       WHERE st.stream_id = ?
-       GROUP BY st.id
-       ORDER BY total_marks DESC`,
+      FROM (
+        SELECT
+          st.id,
+          st.first_name,
+          st.last_name,
+          st.admission_number,
+
+          COALESCE(SUM(sc.total_score), 0) AS total_marks,
+
+          COUNT(sc.subject_id) AS subjects_taken,
+
+          CASE
+            WHEN COUNT(sc.subject_id) > 0
+            THEN ROUND(
+              SUM(sc.total_score) /
+              COUNT(sc.subject_id),
+              2
+            )
+            ELSE 0
+          END AS average
+
+        FROM students st
+
+        LEFT JOIN scores sc
+          ON st.id = sc.student_id
+
+        WHERE st.stream_id = ?
+
+        GROUP BY
+          st.id,
+          st.first_name,
+          st.last_name,
+          st.admission_number
+      ) r
+
+      LEFT JOIN grade_config gc
+        ON r.average
+        BETWEEN gc.min_score
+        AND gc.max_score
+
+      ORDER BY r.total_marks DESC
+      `,
       [req.params.streamId]
     );
 
@@ -160,6 +185,10 @@ exports.getClassResults = async (req, res) => {
     res.json(ranked);
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('SCORE ERROR:', err.message);
+
+    res.status(500).json({
+      error: err.message
+    });
   }
 };
