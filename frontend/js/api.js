@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:3000/api';
+const BASE = 'ikonex-school-management-application-production.up.railway.app/api';
 
 export const api = {
 
