@@ -13,7 +13,7 @@ A system built for managing students, class streams, subjects, scores, and gener
 | Layer | URL |
 |---|---|
 | Frontend | https://elimu-bora.netlify.app/ |
-| Backend API | https://ikonex-school-management-application-production.up.railway.app/ |
+| Backend API | https://ikonex-school-management-application-production.up.railway.app/api |
 
 ---
 
