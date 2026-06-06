@@ -245,7 +245,7 @@ Server running on port 3000
 
 Test it: open `http://localhost:3000` in your browser. You should see:
 ```json
-{ "message": "Ikonex SMS API is running" }
+{ "message": "School Management API  running" }
 ```
 
 ### Step 6 — Open the frontend
