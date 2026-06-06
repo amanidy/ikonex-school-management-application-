@@ -1,9 +1,8 @@
-# Ikonex Academy — Student Management System
+# Student Management System
 
-A full-stack web application built for **Ikonex Systems Software Developer Intern Assessment**.
-Manages students, class streams, subjects, scores, and generates PDF report cards.
+A system built for managing students, class streams, subjects, scores, and generating PDF report cards.
 
-**Candidate:** Arnold Amani
+**Author:** Arnold Amani
 **GitHub:** https://github.com/amanidy/ikonex-school-management-application-.git
 
 
