@@ -256,25 +256,60 @@ function openStudentForm(student = null, streams = []) {
 /* ===== GLOBAL FUNCTIONS ===== */
 
 window.viewStudent = async function(id) {
-  const students = await api.students.getAll();
+  const [student, scores] = await Promise.all([
+    api.students.getOne(id),
+    api.scores.getStudentScores(id)
+  ]);
 
-  const student = students.find(
-    s => Number(s.id) === Number(id)
-  );
-
-  if (!student) {
+  if (!student || student.error) {
     return showToast('Student not found', 'error');
   }
 
-  openModal(
-    'Student Details',
-    `
-      <h3>${student.first_name} ${student.last_name}</h3>
-      <p>${student.admission_number}</p>
-      <p>${student.stream_name || 'N/A'}</p>
-      <p>${student.gender || 'N/A'}</p>
-    `
-  );
+  const scoreRows = scores.length
+    ? scores.map(sc => `
+        <tr>
+          <td>${sc.subject_name} (${sc.code})</td>
+          <td>${sc.cat_score}</td>
+          <td>${sc.exam_score}</td>
+          <td><strong>${sc.total_score}</strong></td>
+          <td><span class="badge badge-${sc.grade || 'none'}">${sc.grade || 'N/A'}</span></td>
+          <td>${sc.remarks || '—'}</td>
+        </tr>`).join('')
+    : `<tr><td colspan="6" class="text-muted" style="padding:16px;text-align:center">
+         No scores recorded yet for this student.
+       </td></tr>`;
+
+  openModal(`${student.first_name} ${student.last_name}`, `
+    <div style="margin-bottom:12px">
+      <div class="text-muted" style="font-size:11px;text-transform:uppercase;margin-bottom:2px">Admission No.</div>
+      <strong>${student.admission_number}</strong>
+    </div>
+    <div style="margin-bottom:12px">
+      <div class="text-muted" style="font-size:11px;text-transform:uppercase;margin-bottom:2px">Stream</div>
+      <strong>${student.stream_name || 'N/A'}</strong>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="text-muted" style="font-size:11px;text-transform:uppercase;margin-bottom:2px">Gender</div>
+      <strong>${student.gender || 'N/A'}</strong>
+    </div>
+    <hr class="divider"/>
+    <div class="card-title" style="margin-bottom:12px">Academic Performance</div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>CAT /50</th>
+            <th>Exam /50</th>
+            <th>Total /100</th>
+            <th>Grade</th>
+            <th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>${scoreRows}</tbody>
+      </table>
+    </div>
+  `);
 };
 
 window.editStudent = async function(id) {
