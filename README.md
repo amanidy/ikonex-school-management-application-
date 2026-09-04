@@ -539,8 +539,13 @@ The following assumptions were made during development:
 - PDF layout may vary across browsers due to client-side rendering
 - No automated tests (unit or integration)
 - Session state is not persisted  refreshing reloads data from the API
+- This project's MySQL database is hosted on Aiven's
+  free tier, which automatically powers off after a period of inactivity.
 
 ---
+## Working On
+ - Finding a long-lasting backend hosting solution
+ - Improving the whole UI to be more friendly
 
 ## Author
 
