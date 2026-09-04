@@ -1,4 +1,4 @@
-const BASE = 'https://ikonex-school-management-application.onrender.com/api';
+const BASE = 'https://ikonex-school-management-application.onrender.com/';
 
 export const api = {
 
