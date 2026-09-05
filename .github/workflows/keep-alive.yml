@@ -1,0 +1,13 @@
+name: Keep Database Alive
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"  # runs every 6 hours
+  workflow_dispatch:        # lets you manually trigger it too, for testing
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend to keep database active
+        run: curl -f https://ikonex-school-management-application.onrender.com/api/streams
