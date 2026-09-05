@@ -2,8 +2,8 @@ name: Keep Database Alive
 
 on:
   schedule:
-    - cron: "0 */6 * * *"  # runs every 6 hours
-  workflow_dispatch:        # lets you manually trigger it too, for testing
+    - cron: "0 */6 * * *"
+  workflow_dispatch:       
 
 jobs:
   ping:
